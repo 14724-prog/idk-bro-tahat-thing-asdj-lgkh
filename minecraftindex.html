@@ -1,0 +1,68 @@
+(() => {
+  console.log("Eagler Fun Mod Loaded!");
+
+  // ===== SETTINGS =====
+  let fullbright = false;
+  let sprint = false;
+  let zoom = false;
+
+  // ===== FULLBRIGHT =====
+  function setBrightness(val) {
+    document.body.style.filter = val ? "brightness(2)" : "none";
+  }
+
+  // ===== ZOOM =====
+  const zoomDiv = document.createElement("style");
+  zoomDiv.innerHTML = `
+    body.zoomed canvas {
+      transform: scale(2);
+      transform-origin: center;
+      cursor: zoom-out;
+    }
+  `;
+  document.head.appendChild(zoomDiv);
+
+  // ===== HUD =====
+  const hud = document.createElement("div");
+  hud.style.position = "fixed";
+  hud.style.top = "10px";
+  hud.style.left = "10px";
+  hud.style.color = "lime";
+  hud.style.fontFamily = "monospace";
+  hud.style.zIndex = 9999;
+  hud.innerHTML = "Eagler Mod Loaded";
+  document.body.appendChild(hud);
+
+  function updateHUD() {
+    hud.innerHTML = `
+      <b>Eagler Fun Mod</b><br>
+      Fullbright: ${fullbright}<br>
+      Sprint: ${sprint}<br>
+      Zoom (Z): ${zoom}
+    `;
+  }
+
+  // ===== KEYBINDS =====
+  document.addEventListener("keydown", (e) => {
+    // Z = Zoom
+    if (e.key.toLowerCase() === "z") {
+      zoom = !zoom;
+      document.body.classList.toggle("zoomed", zoom);
+    }
+
+    // F = Fullbright
+    if (e.key.toLowerCase() === "f") {
+      fullbright = !fullbright;
+      setBrightness(fullbright);
+    }
+
+    // G = Sprint toggle (visual only unless game supports it)
+    if (e.key.toLowerCase() === "g") {
+      sprint = !sprint;
+    }
+
+    updateHUD();
+  });
+
+  updateHUD();
+})();
